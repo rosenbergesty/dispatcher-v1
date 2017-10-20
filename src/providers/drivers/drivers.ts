@@ -14,9 +14,10 @@ export class Drivers {
   }
 
   fetchDriverDetails(driver) {
-    console.log(driver)
-    let body = new FormData();
-    body.append('id', driver.id);
     return this.http.post(this.baseUrl + '/fetch-driver-by-id.php', {id: driver.ID});
+  }
+
+  fetchDriverStops(driver) {
+    return this.http.post(this.baseUrl + '/fetch-stops-by-driverId.php', {driverID: driver.ID}); 
   }
 }

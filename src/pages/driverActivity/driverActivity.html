@@ -8,5 +8,7 @@
 </ion-header>
 
 <ion-content>  
-  <div padding>{{ activity }}</div>
+  <div *ngFor="let stop of activity" padding>
+    <p>{{ stop.address }}</p>
+  </div>
 </ion-content>  
