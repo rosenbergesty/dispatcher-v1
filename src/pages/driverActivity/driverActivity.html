@@ -8,7 +8,70 @@
 </ion-header>
 
 <ion-content>  
-  <div *ngFor="let stop of activity" padding>
-    <p>{{ stop.address }}</p>
+  <div *ngIf="loaded">
+    <div *ngFor="let stop of activity" class="stop-msg">
+      <p>{{ stop.address }}</p>
+      <p>{{ stop.type }} | {{ stop.size }}</p>
+    </div>
+  </div>
+  <div *ngIf="empty" text-center>
+    <p>No stops added yet</p>
+  </div>
+  <div *ngIf="loader" text-center>
+    <ion-spinner></ion-spinner>
   </div>
 </ion-content>  
+
+<ion-footer>
+  <ion-toolbar padding>
+    <div class="stop-input">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-9>
+            <ion-input class="text-input" type="text" placeholder="Address" [(ngModel)]="address"></ion-input>
+          </ion-col>
+          <ion-col col-1></ion-col>
+          <ion-col col-2>
+            <ion-buttons end>
+              <button ion-button icon-only (click)="toggleComment()">
+                <ion-icon [name]="hasComment ? 'remove' : 'add'"></ion-icon>
+              </button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="hasComment">
+          <ion-col col-12>
+            <ion-input class="text-input" type="text" placeholder="Comment" [(ngModel)]="comment"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-4 margin-right>
+            <ion-label stacked>Size</ion-label>
+            <ion-segment [(ngModel)]="size">
+              <ion-segment-button value="10">10</ion-segment-button>
+              <ion-segment-button value="20">20</ion-segment-button>
+              <ion-segment-button value="30">30</ion-segment-button>
+              <ion-segment-button value="40">40</ion-segment-button>
+            </ion-segment>
+          </ion-col>
+          <ion-col col-4>
+            <ion-label stacked>Action</ion-label>
+            <ion-segment [(ngModel)]="action">
+              <ion-segment-button value="pu">PU</ion-segment-button>
+              <ion-segment-button value="do">DO</ion-segment-button>
+              <ion-segment-button value="sw">SW</ion-segment-button>
+            </ion-segment>
+          </ion-col>
+          <ion-col col-3 margin-top>
+            <ion-buttons end>
+              <button ion-button icon-right color="royal" (click)="addStop()">
+                Send
+                <ion-icon name="send"></ion-icon>
+              </button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-toolbar>
+</ion-footer>
