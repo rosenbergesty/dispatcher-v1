@@ -55,6 +55,8 @@ export class DriverActivityPage {
   public loader = true;
   public empty = false;
 
+  public num: number[];
+
   constructor( private drivers: Drivers, private nav: NavController, private navParams: NavParams, public storage: Storage ){
     this.currentDriver = navParams.get('driver');
     this.fetchStops();
