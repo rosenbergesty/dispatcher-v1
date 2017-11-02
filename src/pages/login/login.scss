@@ -1,0 +1,14 @@
+.item.item-input.invalid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner, .item.item-input.invalid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+  border-bottom-color: #db3232;
+  -webkit-box-shadow: inset 0 -1px 0 0 #db3232;
+  box-shadow: inset 0 -1px 0 0 #db3232;
+}
+.list .item-block .item-inner{
+  margin-right: 15px;
+}
+
+p.error-message{
+  color: #db3232;
+  margin: 0;
+  margin-left: 15px;
+}

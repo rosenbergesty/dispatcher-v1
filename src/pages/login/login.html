@@ -16,13 +16,13 @@
         <form (submit)="login()">
           <h2 text-center padding>G</h2>
           <ion-list>
-
-            <ion-item>
+            <p *ngIf="invalid" class="error-message">Wrong Login</p>
+            <ion-item [ngClass]="{'invalid': invalid}">
               <ion-label stacked>EMAIL</ion-label>
               <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
             </ion-item>
 
-            <ion-item>
+            <ion-item [ngClass]="{'invalid': invalid}">
               <ion-label stacked>PASSWORD</ion-label>
               <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
               

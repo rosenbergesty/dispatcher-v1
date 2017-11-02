@@ -7,11 +7,14 @@
 
 </ion-header>
 
-<ion-content>  
+<ion-content #content>  
+  <ion-refresher (ionRefresh)="onLoadMore($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="loaded">
-    <div *ngFor="let stop of activity" class="stop-msg">
+    <div *ngFor="let stop of activity" class="stop-msg" [ngClass]="stop.status">
       <p>{{ stop.address }}</p>
-      <p>{{ stop.type }} | {{ stop.size }}</p>
+      <p><span *ngIf="stop.type == 'do'">{{ "Drop Off" }}</span><span *ngIf="stop.type == 'pu'">{{ "Pick Up" }}</span><span *ngIf="stop.type == 'sw'">{{ "Switch" }}</span> | {{ stop.size }} | {{ stop.timeFulfilled }}</p>
     </div>
   </div>
   <div *ngIf="empty" text-center>
