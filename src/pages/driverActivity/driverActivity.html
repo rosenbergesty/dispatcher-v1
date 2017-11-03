@@ -27,14 +27,13 @@
 
 <ion-footer>
   <ion-toolbar padding>
-    <div class="stop-input">
+    <div class="stop-input" *ngIf="connected">
       <ion-grid>
         <ion-row>
-          <ion-col col-9>
+          <ion-col col-11 no-padding>
             <ion-input class="text-input" type="text" placeholder="Address" [(ngModel)]="address"></ion-input>
           </ion-col>
-          <ion-col col-1></ion-col>
-          <ion-col col-2>
+          <ion-col col-1 no-padding>
             <ion-buttons end>
               <button ion-button icon-only (click)="toggleComment()">
                 <ion-icon [name]="hasComment ? 'remove' : 'add'"></ion-icon>
@@ -43,12 +42,12 @@
           </ion-col>
         </ion-row>
         <ion-row *ngIf="hasComment">
-          <ion-col col-12>
-            <ion-input class="text-input" type="text" placeholder="Comment" [(ngModel)]="comment"></ion-input>
+          <ion-col col-12 no-padding>
+            <ion-input class="text-input comment-input" type="text" placeholder="Comment" [(ngModel)]="comment"></ion-input>
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col col-4 margin-right>
+          <ion-col col-5 margin-right>
             <ion-label stacked>Size</ion-label>
             <ion-segment [(ngModel)]="size">
               <ion-segment-button value="10">10</ion-segment-button>
@@ -65,16 +64,19 @@
               <ion-segment-button value="sw">SW</ion-segment-button>
             </ion-segment>
           </ion-col>
-          <ion-col col-3 margin-top>
+          <ion-col col-2 margin-top>
             <ion-buttons end>
               <button ion-button icon-right color="royal" (click)="addStop()">
                 Send
-                <ion-icon name="send"></ion-icon>
+                <ion-icon name="send" class="blue"></ion-icon>
               </button>
             </ion-buttons>
           </ion-col>
         </ion-row>
       </ion-grid>
+    </div>
+    <div *ngIf="!connected">
+      <p style="text-align: center;">You seem to be offline. Check you connection. </p>
     </div>
   </ion-toolbar>
 </ion-footer>

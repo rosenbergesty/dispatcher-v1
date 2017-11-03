@@ -34,7 +34,41 @@ import { Stop } from '../../models/stop';
     }   
     .stop-msg.complete{
       background: #4caf50
-    }                     
+    }
+    .text-input-md{
+      background: #FFFFFF;
+      padding: 10px;
+      margin: 0;
+      border: 1px solid #CCCCCC;
+    }
+
+    .segment-md ion-segment-button.segment-button.segment-activated{
+      background: #488AFF;
+      color: #FFFFFF;
+    }
+    .segment-md .segment-button{
+      height: 3rem;
+      line-height: 3rem;
+    }
+    ion-icon.blue{
+      color: #488AFF;
+    }
+    ion-buttons{
+      margin-top: -1px;
+    }
+    ion-label.label-md{
+      margin-top: 0;
+      padding: 5px 0;
+    }
+    .comment-input .text-input-md{
+      margin-top: 5px;
+    }
+    .text-input-ios{
+      background: #FFFFFF;
+      border: 1px solid #CCCCCC;
+      border-radius: 5px;
+      padding: 5px;
+    }
   `],
   providers: [Drivers]
 })
@@ -54,6 +88,8 @@ export class DriverActivityPage {
   public empty = false;
 
   public num: number[];
+
+  public connected = false;
 
   constructor( private drivers: Drivers, private nav: NavController, private navParams: NavParams, public storage: Storage, private network: Network, public alertCtrl: AlertController, private toast: Toast ){
     this.currentDriver = navParams.get('driver');
@@ -224,7 +260,6 @@ export class DriverActivityPage {
   }
 
   /* Network */
-  public connected: boolean;
   checkNetwork() {
     if(this.network.type != 'none' && this.network.type != 'unknown'){
       this.connected = true;
