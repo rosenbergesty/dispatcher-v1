@@ -1,0 +1,82 @@
+page-driver .segment-md ion-segment-button.segment-button {
+  padding: 0 0;
+}
+page-driver .text-input-ios{
+  margin: 5px 8px 5px 0;
+}
+page-driver .label-ios{
+  margin: -5px 8px 11px 0;
+}
+page-driver button.disable-hover.bar-button.bar-button-ios.bar-button-default.bar-button-default-ios.bar-button-ios-royal {
+  position: relative;
+  top: -10px;
+}
+page-driver .stop-msg {
+  background: #498aff;
+  margin: 10px 10px 10px 15px;
+  border-radius: 0 20px 20px 20px;
+  padding: 1px 10px;
+  position: relative;
+}   
+page-driver .stop-msg.complete{
+  background: #4caf50
+}
+page-driver .text-input-md{
+  background: #FFFFFF;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid #CCCCCC;
+}
+
+page-driver .segment-md ion-segment-button.segment-button.segment-activated{
+  background: #488AFF;
+  color: #FFFFFF;
+}
+page-driver .segment-md .segment-button{
+  height: 3rem;
+  line-height: 3rem;
+}
+page-driver ion-icon.blue{
+  color: #488AFF;
+}
+page-driver ion-buttons{
+  margin-top: -1px;
+}
+page-driver ion-label.label-md{
+  margin-top: 0;
+  padding: 5px 0;
+}
+page-driver .comment-input .text-input-md{
+  margin-top: 5px;
+}
+page-driver .text-input-ios{
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  padding: 5px;
+}
+page-driver .searchbar-md .searchbar-input-container .searchbar-input {
+  box-shadow: none;
+  border: 1px solid #CCCCCC;
+  border-radius: 0;
+  padding: 5px;
+}
+page-driver .toolbar .searchbar-md{
+  padding: 0;
+}
+page-driver .searchbar-search-icon, page-driver .searchbar-search-icon, page-driver .searchbar-md.searchbar-has-focus.searchbar-show-cancel .searchbar-md-cancel{
+  display: none;
+}
+
+
+page-driver .address-input ion-list.list.list-ios{
+  marign-top: 0;
+}
+page-driver ion-searchbar.searchbar{
+  padding: 0;
+}
+page-driver .toolbar .searchbar-ios .searchbar-input{
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  padding: 5px;
+}

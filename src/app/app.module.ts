@@ -12,13 +12,15 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { DriverActivityPage } from '../pages/driverActivity/driverActivity';
 import { LoginPage } from '../pages/login/login';
+import { PopoverPage } from '../pages/popover/popover';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     DriverActivityPage,
-    LoginPage
+    LoginPage,
+    PopoverPage
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { LoginPage } from '../pages/login/login';
     MyApp,
     HomePage,
     DriverActivityPage,
-    LoginPage
+    LoginPage,
+    PopoverPage
   ],
   providers: [
     StatusBar,

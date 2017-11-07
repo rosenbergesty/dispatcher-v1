@@ -40,6 +40,6 @@ export class Drivers {
   }
 
   deleteStop(stopId) {
-    return this.http.post(this.baseUrl + '/delete-stop.php', {stop: stopId});
+    return this.http.post(this.baseUrl + '/delete-stop.php', {stopId: stopId});
   }
 }

@@ -12,7 +12,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div *ngIf="loaded">
-    <div *ngFor="let stop of activity" class="stop-msg" [ngClass]="stop.status">
+    <div *ngFor="let stop of activity" class="stop-msg" [ngClass]="stop.status" (press)="onHold($event, stop)">
       <p>{{ stop.address }}</p>
       <p><span *ngIf="stop.type == 'do'">{{ "Drop Off" }}</span><span *ngIf="stop.type == 'pu'">{{ "Pick Up" }}</span><span *ngIf="stop.type == 'sw'">{{ "Switch" }}</span> | {{ stop.size }} | {{ stop.timeFulfilled }}</p>
     </div>
@@ -30,8 +30,16 @@
     <div class="stop-input" *ngIf="connected">
       <ion-grid>
         <ion-row>
-          <ion-col col-11 no-padding>
-            <ion-input class="text-input" type="text" placeholder="Address" [(ngModel)]="address"></ion-input>
+          <ion-col col-11 no-padding class="address-input"><!-- 
+            <ion-input class="text-input" type="text" placeholder="Address" [(ngModel)]="address"></ion-input> -->
+
+            <ion-searchbar [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()" placeholder="Address"></ion-searchbar>
+
+            <ion-list no-margin>
+              <ion-item *ngFor="let item of autocompleteItems" tappable (click)="chooseItem(item)">
+                {{ item }}
+              </ion-item>
+            </ion-list>
           </ion-col>
           <ion-col col-1 no-padding>
             <ion-buttons end>

@@ -1,75 +1,19 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { Component, ViewChild, NgZone } from '@angular/core';
+import { NavController, NavParams, AlertController, PopoverController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
 import { Toast } from '@ionic-native/toast';
+import { } from '@types/googlemaps';
 
 import { Drivers } from '../../providers/drivers/drivers';
 import { Driver } from '../../models/driver';
 import { Stop } from '../../models/stop';
+import { PopoverPage } from '../popover/popover';
+
 
 @Component({
   selector: 'page-driver',
   templateUrl: 'driverActivity.html',
-  styles: [`
-    .segment-md ion-segment-button.segment-button {
-      padding: 0 0;
-    }
-    .text-input-ios{
-      margin: 5px 8px 5px 0;
-    }
-    .label-ios{
-      margin: -5px 8px 11px 0;
-    }
-    button.disable-hover.bar-button.bar-button-ios.bar-button-default.bar-button-default-ios.bar-button-ios-royal {
-      position: relative;
-      top: -10px;
-    }
-    .stop-msg {
-      background: #498aff;
-      margin: 10px 10px 10px 15px;
-      border-radius: 0 20px 20px 20px;
-      padding: 1px 10px;
-      position: relative;
-    }   
-    .stop-msg.complete{
-      background: #4caf50
-    }
-    .text-input-md{
-      background: #FFFFFF;
-      padding: 10px;
-      margin: 0;
-      border: 1px solid #CCCCCC;
-    }
-
-    .segment-md ion-segment-button.segment-button.segment-activated{
-      background: #488AFF;
-      color: #FFFFFF;
-    }
-    .segment-md .segment-button{
-      height: 3rem;
-      line-height: 3rem;
-    }
-    ion-icon.blue{
-      color: #488AFF;
-    }
-    ion-buttons{
-      margin-top: -1px;
-    }
-    ion-label.label-md{
-      margin-top: 0;
-      padding: 5px 0;
-    }
-    .comment-input .text-input-md{
-      margin-top: 5px;
-    }
-    .text-input-ios{
-      background: #FFFFFF;
-      border: 1px solid #CCCCCC;
-      border-radius: 5px;
-      padding: 5px;
-    }
-  `],
   providers: [Drivers]
 })
 export class DriverActivityPage {
@@ -91,10 +35,19 @@ export class DriverActivityPage {
 
   public connected = false;
 
-  constructor( private drivers: Drivers, private nav: NavController, private navParams: NavParams, public storage: Storage, private network: Network, public alertCtrl: AlertController, private toast: Toast ){
+  public autocomplete;
+  public autocompleteItems;
+  public service = new google.maps.places.AutocompleteService();
+
+  constructor( private drivers: Drivers, private nav: NavController, private navParams: NavParams, public storage: Storage, private network: Network, public alertCtrl: AlertController, private toast: Toast, private zone: NgZone, public popoverCtrl: PopoverController, public loadingCtrl: LoadingController ){
     this.currentDriver = navParams.get('driver');
     this.checkNetwork();
     this.fetchLatestStops();
+
+    this.autocompleteItems = [];
+    this.autocomplete = {
+      query: ''
+    };
   }
 
   fetchLatestStops(){
@@ -119,6 +72,8 @@ export class DriverActivityPage {
               if(data.json() == '0 results'){
                 this.loader = false;
                 this.empty = true;
+
+                this.content.scrollToBottom(300);
               } else {
                 this.activity = data.json();
                 this.storage.set('stops' + this.currentDriver.ID, data.json());
@@ -174,6 +129,45 @@ export class DriverActivityPage {
     this.hasComment = !this.hasComment;
   }
 
+  /* Delete Stop */
+  onHold(event, stop){
+    let popover = this.popoverCtrl.create(PopoverPage, stop);
+    popover.present({
+      ev: event
+    });
+    popover.onDidDismiss(data => {
+      this.fetchLatestStops();
+    });
+  }
+
+  /* Address Autcomplete */
+  dismiss() {
+
+  }
+
+  chooseItem(item: any) {
+    console.log(item);
+    this.autocomplete.query = item;
+    this.autocompleteItems = [];
+    this.address = item;
+  }
+  
+  updateSearch() {
+    if (this.autocomplete.query == '') {
+      this.autocompleteItems = [];
+      return;
+    }
+    let me = this;
+    this.service.getPlacePredictions({ input: this.autocomplete.query, componentRestrictions: {country: 'US'} }, function (predictions, status) {
+      me.autocompleteItems = []; 
+      me.zone.run(function () {
+        predictions.forEach(function (prediction) {
+          me.autocompleteItems.push(prediction.description);
+        });
+      });
+    });
+  }
+
   addStop(){
     // Show error if not valid
     var valid = true;
@@ -181,6 +175,10 @@ export class DriverActivityPage {
       console.log('Address');
       valid = false;
     }
+
+    let loading = this.loadingCtrl.create({
+      content: 'Adding stop...'
+    });
 
     // Save to db
     if(valid){
@@ -194,9 +192,18 @@ export class DriverActivityPage {
         time: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
       }
       this.storage.get('user').then((val) => {
+        loading.present();
         this.drivers.addStop(this.currentDriver.ID, val.ID, stop).subscribe(
           data => {
-            console.log(data);
+            console.log(data.json());
+            var resp = data.json()[0];
+            if(resp.code == '200'){
+              this.fetchLatestStops();
+              this.address = '';
+              this.autocomplete.query = '';
+            }
+            loading.dismiss();
+            this.content.scrollToBottom(100);
           },
           err => {
             console.log(err);
@@ -208,25 +215,6 @@ export class DriverActivityPage {
 
       })
     }
-  }
-
-  delStop(stopId){
-    console.log(stopId);
-    this.drivers.deleteStop(stopId).subscribe(
-      data => {
-        console.log(data);
-        if(data.json().code == 200){
-          this.fetchStops();
-        } else {
-          console.log(data.json().data);
-        }
-      },
-      err => {
-        console.log(err);
-      },
-      () => {
-        console.log('deleted');
-      })
   }
 
   /* Load More */
