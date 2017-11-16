@@ -28,7 +28,6 @@ export class HomePage {
   }
 
   checkDrivers() {
-    var savedDrivers;
     this.storage.get('drivers').then((val) => {
       if(val == null){
         this.getAllDrivers();

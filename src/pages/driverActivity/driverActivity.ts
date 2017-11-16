@@ -2,11 +2,9 @@ import { Component, ViewChild, NgZone } from '@angular/core';
 import { NavController, NavParams, AlertController, PopoverController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
-import { Toast } from '@ionic-native/toast';
 import { } from '@types/googlemaps';
 
 import { Drivers } from '../../providers/drivers/drivers';
-import { Driver } from '../../models/driver';
 import { Stop } from '../../models/stop';
 import { PopoverPage } from '../popover/popover';
 
@@ -39,7 +37,7 @@ export class DriverActivityPage {
   public autocompleteItems;
   public service = new google.maps.places.AutocompleteService();
 
-  constructor( private drivers: Drivers, private nav: NavController, private navParams: NavParams, public storage: Storage, private network: Network, public alertCtrl: AlertController, private toast: Toast, private zone: NgZone, public popoverCtrl: PopoverController, public loadingCtrl: LoadingController ){
+  constructor( private drivers: Drivers, private navParams: NavParams, public storage: Storage, private network: Network, public alertCtrl: AlertController, private zone: NgZone, public popoverCtrl: PopoverController, public loadingCtrl: LoadingController ){
     this.currentDriver = navParams.get('driver');
     this.checkNetwork();
     this.fetchLatestStops();

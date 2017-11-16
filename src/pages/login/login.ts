@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, AlertController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
 import { Dispatcher } from '../../models/dispatcher';
@@ -19,6 +19,7 @@ export class LoginPage {
   public invalid = false;
 
   constructor(public navCtrl: NavController, public dispatchers: Dispatchers, public storage: Storage, private network: Network, public alertCtrl: AlertController){
+    console.log('hey there...');
     this.storage.get('user').then((val) => {
       console.log(val);
       if(val != null){
