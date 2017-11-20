@@ -15,7 +15,7 @@
     <div *ngFor="let day of daysActivity">
       <p padding-left class="date-string">{{ day.date }}</p>
 
-      <div *ngFor="let stop of day.stops" class="stop-msg another class" [ngClass]="stop.status" (click)="onHold($event, stop)">
+      <div *ngFor="let stop of day.stops" class="stop-msg" [ngClass]="stop.status" (click)="onHold($event, stop)">
         <p>{{ stop.address }}</p>
         <p><span *ngIf="stop.type == 'do'">{{ "Drop Off" }}</span><span *ngIf="stop.type == 'pu'">{{ "Pick Up" }}</span><span *ngIf="stop.type == 'sw'">{{ "Switch" }}</span> | {{ stop.size }} <span *ngIf="stop.timeFulfilled">|</span> {{ stop.timeFulfilled }}</p>
       </div>
