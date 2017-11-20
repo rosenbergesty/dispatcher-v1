@@ -1,7 +1,7 @@
 <ion-header>  
   <ion-navbar>
     <ion-title>
-      Login
+      Log In
     </ion-title>
   </ion-navbar>
 
@@ -14,8 +14,17 @@
       </ion-col>
       <ion-col col-10 style="background: #FFFFFF; margin-top: 50px;">
         <form (submit)="login()">
-          
-          <ion-img width="80" height="80" src="..."></ion-img>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+              </ion-col>
+              <ion-col>
+                <ion-img width="50" height="50" class="logo-image" src="assets/imgs/logo.png" margin></ion-img>
+              </ion-col>
+              <ion-col>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
           <ion-list>
             <p *ngIf="invalid" class="error-message">Wrong Login</p>
             <ion-item [ngClass]="{'invalid': invalid}">
@@ -29,7 +38,7 @@
               
             </ion-item>
 
-            <div padding>
+            <div padding margin-top>
               <button ion-button color="primary" block>LOGIN</button>
             </div>
 

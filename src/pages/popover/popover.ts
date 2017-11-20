@@ -20,12 +20,10 @@ export class PopoverPage {
   }
 
   delStop(stopId){
-    console.log(stopId);
     this.drivers.deleteStop(stopId).subscribe(
       data => {
         var resp = data.json();
         if(resp[0].code == 200){
-          // this.fetchStops();
         } else {
           console.log(data.json().data);
         }

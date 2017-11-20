@@ -80,3 +80,13 @@ page-driver .toolbar .searchbar-ios .searchbar-input{
   border: 1px solid #CCCCCC;
   padding: 5px;
 }
+
+page-driver{
+  .date-string{
+    color: #AAAAAA;
+    font-style: italic;
+  }
+  .stop-msg.completed{
+    background: #4cd964;
+  }
+}

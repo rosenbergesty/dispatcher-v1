@@ -1,5 +1,5 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { NavController, NavParams, AlertController, PopoverController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Content, PopoverController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
 import { } from '@types/googlemaps';
@@ -15,8 +15,9 @@ import { PopoverPage } from '../popover/popover';
   providers: [Drivers]
 })
 export class DriverActivityPage {
-  @ViewChild('content') content: any;
-  public activity: Stop[];
+  @ViewChild('content') content: Content;
+  public activity: Stop[] = [];
+  public daysActivity: any[] = [];
   public currentDriver;
   public hasComment = false;
 
@@ -37,7 +38,14 @@ export class DriverActivityPage {
   public autocompleteItems;
   public service = new google.maps.places.AutocompleteService();
 
-  constructor( private drivers: Drivers, private navParams: NavParams, public storage: Storage, private network: Network, public alertCtrl: AlertController, private zone: NgZone, public popoverCtrl: PopoverController, public loadingCtrl: LoadingController ){
+  public currentDate: Date;
+
+  constructor( private drivers: Drivers, 
+    private navParams: NavParams, 
+    public storage: Storage, private network: Network, 
+    public alertCtrl: AlertController, private zone: NgZone, 
+    public popoverCtrl: PopoverController, 
+    public loadingCtrl: LoadingController ){
     this.currentDriver = navParams.get('driver');
     this.checkNetwork();
     this.fetchLatestStops();
@@ -48,41 +56,123 @@ export class DriverActivityPage {
     };
   }
 
+  scrollBottom() {
+    setTimeout(() => {
+      this.content.scrollToBottom(200);
+    }, 500);
+  }
+
   fetchLatestStops(){
+    var curDay = new Date();
+    var today = new Date();
+    var count = 0;
     this.storage.get('stops'+this.currentDriver.ID).then((val) => {
       
       if(val != null){
-        this.activity = val;
+        val.forEach(stop => {
+          var dateString = stop.date;
+          var dateParts = dateString.split("/");
+          var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+          date.setHours(0);
+          date.setMinutes(0);
+          date.setSeconds(0, 0);
+          today.setHours(0);
+          today.setMinutes(0);
+          today.setSeconds(0, 0);
+
+          if(count == 0){
+            this.currentDate = date;
+          }
+          count ++;
+
+          if(date.getTime() == curDay.getTime()){
+            console.log('same');
+            this.daysActivity[this.daysActivity.length - 1].stops.push(stop);
+          } else {
+            var timeDiff = date.getTime() - today.getTime();
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            curDay = date;
+
+            if(diffDays == 0){
+              this.daysActivity.push({date: "Today", stops: [stop]});
+            } else if(diffDays == -1){
+              this.daysActivity.push({date: "Yesterday", stops: [stop]});
+            } else {
+              var monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+              ];
+              this.daysActivity.push({date: monthNames[curDay.getMonth()] + ' ' + curDay.getDate(), stops: [stop]});
+            }
+          }
+        })
 
         this.loader = false;
         this.empty = false;
         this.loaded = true;
 
-        this.content.scrollToBottom(100);
+        this.scrollBottom();
       }
 
       if(this.connected == true){
         var count = 10;
+        var counter = 0;
+        this.daysActivity = [];
+        curDay = new Date();
         this.storage.get('user').then((val) => {
           this.drivers.fetchSomeDriverStops(val.ID, this.currentDriver, count, 0).subscribe(
             data => {
-              console.log(data.json());
+              this.activity = data.json();
               if(data.json() == '0 results'){
                 this.loader = false;
                 this.empty = true;
 
                 this.content.scrollToBottom(300);
               } else {
-                this.activity = data.json();
-                this.storage.set('stops' + this.currentDriver.ID, data.json());
-
-                console.log(data.json());
-
                 this.loader = false;
                 this.empty = false;
                 this.loaded = true;
 
-                this.content.scrollToBottom(300);
+                data.json().forEach(stop => {
+                  var dateString = stop.date;
+                  var dateParts = dateString.split("/");
+                  var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                  date.setHours(0);
+                  date.setMinutes(0);
+                  date.setSeconds(0, 0);
+                  today.setHours(0);
+                  today.setMinutes(0);
+                  today.setSeconds(0, 0);
+
+                  if(counter == 0){
+                    this.currentDate = date;
+                  }
+                  counter ++;
+
+                  if(date.getTime() == curDay.getTime()){
+                    console.log('same');
+                    this.daysActivity[this.daysActivity.length - 1].stops.push(stop);
+                  } else {
+                    var timeDiff = date.getTime() - today.getTime();
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    curDay = date;
+
+                    if(diffDays == 0){
+                      console.log('today');
+                      this.daysActivity.push({date: "Today", stops: [stop]});
+                    } else if(diffDays == -1){
+                      this.daysActivity.push({date: "Yesterday", stops: [stop]});
+                    } else {
+                      var monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                      ];
+                      this.daysActivity.push({date: monthNames[curDay.getMonth()] + ' ' + curDay.getDate(), stops: [stop]});
+                    }
+                  }
+                })
+
+                this.storage.set('stops' + this.currentDriver.ID, data.json());
+
+                this.scrollBottom();
               }
             },
             err => {
@@ -99,6 +189,8 @@ export class DriverActivityPage {
     });
   }
   fetchStops(){
+    var curDay = new Date();
+    var today = new Date();
     this.storage.get('user').then((val) => {
       this.drivers.fetchDriverStops(val.ID, this.currentDriver).subscribe(
         data => {
@@ -110,6 +202,46 @@ export class DriverActivityPage {
             this.loader = false;
             this.empty = false;
             this.loaded = true;
+            var counter = 0;
+
+            data.json().forEach(stop => {
+              var dateString = stop.date;
+              var dateParts = dateString.split("/");
+              var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+              date.setHours(0);
+              date.setMinutes(0);
+              date.setSeconds(0, 0);
+              today.setHours(0);
+              today.setMinutes(0);
+              today.setSeconds(0, 0);
+
+              if(counter == 0){
+                this.currentDate = stop.date;
+              }
+              counter ++;
+
+              if(date.getTime() == curDay.getTime()){
+                console.log('same');
+                this.daysActivity[this.daysActivity.length - 1].stops.push(stop);
+              } else {
+                var timeDiff = date.getTime() - today.getTime();
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                curDay = date;
+
+                if(diffDays == 0){
+                  console.log('today');
+                  this.daysActivity.push({date: "Today", stops: [stop]});
+                } else if(diffDays == -1){
+                  this.daysActivity.push({date: "Yesterday", stops: [stop]});
+                } else {
+                  var monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                  ];
+                  this.daysActivity.push({date: monthNames[curDay.getMonth()] + ' ' + curDay.getDate(), stops: [stop]});
+                }
+              }
+            })
+            this.content.scrollToBottom(300);
           }
         },
         err => {
@@ -156,7 +288,9 @@ export class DriverActivityPage {
       return;
     }
     let me = this;
-    this.service.getPlacePredictions({ input: this.autocomplete.query, componentRestrictions: {country: 'US'} }, function (predictions, status) {
+    this.service.getPlacePredictions({ input: this.autocomplete.query, 
+      componentRestrictions: {country: 'US'} }, 
+      function (predictions, status) {
       me.autocompleteItems = []; 
       me.zone.run(function () {
         predictions.forEach(function (prediction) {
@@ -220,6 +354,8 @@ export class DriverActivityPage {
     console.log('load more');
     var total = this.activity.length;
     var count = 10;
+    var today = new Date();
+    var curDay = this.currentDate;
 
     this.storage.get('user').then((val) => {
       this.drivers.fetchSomeDriverStops(val.ID, this.currentDriver, count, total).subscribe(
@@ -229,6 +365,36 @@ export class DriverActivityPage {
             console.log('none');
           } else {
             for(var i of data.json()){
+              var dateString = i.date;
+              var dateParts = dateString.split("/");
+              var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+              date.setHours(0);
+              date.setMinutes(0);
+              date.setSeconds(0, 0);
+              today.setHours(0);
+              today.setMinutes(0);
+              today.setSeconds(0, 0);
+
+              if(date.getTime() == curDay.getTime()){
+                this.daysActivity[0].stops.unshift(i);
+              } else {
+                var timeDiff = date.getTime() - today.getTime();
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                curDay = date;
+
+                if(diffDays == 0){
+                  console.log('today');
+                  this.daysActivity.unshift({date: "Today", stops: [i]});
+                } else if(diffDays == -1){
+                  this.daysActivity.unshift({date: "Yesterday", stops: [i]});
+                } else {
+                  var monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                  ];
+                  this.daysActivity.unshift({date: monthNames[curDay.getMonth()] + ' ' + curDay.getDate(), stops: [i]});
+                }
+              }
+
               this.activity.unshift(i);
             }
           }
