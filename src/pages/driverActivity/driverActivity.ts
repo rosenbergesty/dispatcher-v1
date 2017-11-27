@@ -188,6 +188,7 @@ export class DriverActivityPage {
       }
     });
   }
+
   fetchStops(){
     var curDay = new Date();
     var today = new Date();
@@ -364,7 +365,8 @@ export class DriverActivityPage {
           if(data.json() == '0 results'){
             console.log('none');
           } else {
-            for(var i of data.json()){
+            var dataArr = data.json().reverse();
+            for(var i of dataArr){
               var dateString = i.date;
               var dateParts = dateString.split("/");
               var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);

@@ -6,6 +6,7 @@ import { Toast } from '@ionic-native/toast';
 
 import { Drivers } from '../../providers/drivers/drivers';
 import { DriverActivityPage } from '../driverActivity/driverActivity';
+import { LoginPage } from '../login/login';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -23,8 +24,18 @@ export class HomePage {
   public emptyMsg;
   public searchQuery: string = '';
 
-  constructor(public navCtrl: NavController, private drivers: Drivers, private storage: Storage, private network: Network, public alertCtrl: AlertController, private toast: Toast) {
-    this.checkDrivers();
+  constructor(public navCtrl: NavController, 
+    private drivers: Drivers, private storage: Storage, 
+    private network: Network, public alertCtrl: AlertController, 
+    private toast: Toast) {
+    this.storage.get('user').then((val) => {
+      console.log(val);
+      if(val == null){
+        this.navCtrl.push(LoginPage);
+      } else {
+        this.checkDrivers();
+      }
+    });
   }
 
   checkDrivers() {

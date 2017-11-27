@@ -34,11 +34,8 @@
     <div class="stop-input" *ngIf="connected">
       <ion-grid>
         <ion-row>
-          <ion-col col-11 no-padding class="address-input"><!-- 
-            <ion-input class="text-input" type="text" placeholder="Address" [(ngModel)]="address"></ion-input> -->
-
+          <ion-col col-11 no-padding class="address-input">
             <ion-searchbar [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()" placeholder="Address"></ion-searchbar>
-
             <ion-list no-margin>
               <ion-item *ngFor="let item of autocompleteItems" tappable (click)="chooseItem(item)">
                 {{ item }}
