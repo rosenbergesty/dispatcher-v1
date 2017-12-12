@@ -29,7 +29,7 @@
     "@ionic/storage": "^2.0.1",
     "@types/googlemaps": "^3.29.2",
     "cordova-android": "^6.2.3",
-    "cordova-browser": "^4.1.0",
+    "cordova-browser": "5.0.1",
     "cordova-ios": "4.5.3",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-ionic-webview": "^1.1.16",
@@ -66,8 +66,8 @@
     },
     "platforms": [
       "android",
-      "browser",
-      "ios"
+      "ios",
+      "browser"
     ]
   }
 }

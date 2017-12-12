@@ -419,7 +419,8 @@ export class DriverActivityPage {
       this.connected = true;
     }
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-      this.connected = false;
+      // this.connected = false;
+      this.connected = true;
     });
 
     let connectSubscription = this.network.onConnect().subscribe(() => {
@@ -429,6 +430,8 @@ export class DriverActivityPage {
         }
       }, 3000);
     });
+    
+      this.connected = true;
   }
   connectionAlert() {
     var alert = this.alertCtrl.create({

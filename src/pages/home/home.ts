@@ -83,6 +83,7 @@ export class HomePage {
     var total = 0;
     this.checkNetwork();
 
+    this.connected = true;
     if(this.connected == true){
       this.drivers.countDrivers().subscribe(
         data => {
@@ -188,6 +189,7 @@ export class HomePage {
     }
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
       this.connected = false;
+      this.connected = true;
     });
 
     let connectSubscription = this.network.onConnect().subscribe(() => {

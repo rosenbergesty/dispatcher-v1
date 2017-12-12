@@ -48,6 +48,7 @@ export class LoginPage {
 
   login() {
     // login
+    this.connected = true;
     if(this.connected == true){   
       this.dispatchers.loginDispatcher(this.email, this.password).subscribe(
         data => {
