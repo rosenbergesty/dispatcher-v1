@@ -35,10 +35,14 @@ export class Drivers {
   }
 
   addStop(driver, dispatcher, stop) {
-    return this.http.post(this.baseUrl + '/add-stop.php', {driverID: driver, dispatcher: dispatcher, address: stop.address, action: stop.action, size: stop.size, date: stop.date, time: stop.time, comment: stop.comment});
+    return this.http.post(this.baseUrl + '/add-stop.php', {driverID: driver, dispatcher: dispatcher, address: stop.address, action: stop.action, size: stop.size, date: stop.date, time: stop.time, comment: stop.comment, parking: stop.parking});
   }
 
   deleteStop(stopId) {
     return this.http.post(this.baseUrl + '/delete-stop.php', {stopId: stopId});
+  }
+
+  forwardStop(stopId, driverId, type, address, date, time) {
+    return this.http.post(this.baseUrl + '/forward-stop.php', {stopId: stopId, driverId: driverId, stopType: type, address: address, date: date, time: time});
   }
 }

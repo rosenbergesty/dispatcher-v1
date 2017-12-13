@@ -35,7 +35,7 @@
       <ion-grid>
         <ion-row>
           <ion-col col-11 no-padding class="address-input">
-            <ion-searchbar [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()" placeholder="Address"></ion-searchbar>
+            <ion-searchbar [(ngModel)]="autocomplete.query" (ionInput)="updateSearch()" [placeholder]="'Address'"></ion-searchbar>
             <ion-list no-margin>
               <ion-item *ngFor="let item of autocompleteItems" tappable (click)="chooseItem(item)">
                 {{ item }}
@@ -47,12 +47,70 @@
               <button ion-button icon-only (click)="toggleComment()">
                 <ion-icon [name]="hasComment ? 'remove' : 'add'"></ion-icon>
               </button>
+
+              <button ion-button icon-only (click)="toggleParking()">
+                <ion-icon [name]="hasParking ? 'time' : 'time'"></ion-icon>
+              </button>
             </ion-buttons>
           </ion-col>
         </ion-row>
         <ion-row *ngIf="hasComment">
           <ion-col col-12 no-padding>
             <ion-input class="text-input comment-input" type="text" placeholder="Comment" [(ngModel)]="comment"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="hasParking">
+          <ion-col col-12 no-padding>
+            <ion-select [(ngModel)]="parking" class="parking-input" [placeholder]="'Alternate Parking'">
+              <ion-option value="6:00 - 6:30AM">6:00 - 6:30AM</ion-option>
+              <ion-option value="6:30 - 7:00AM">6:30 - 7:00AM</ion-option>
+              <ion-option value="7:00 - 7:30AM">7:00 - 7:30AM</ion-option>
+              <ion-option value="7:30 - 8:00AM">7:30 - 8:00AM</ion-option>
+              <ion-option value="8:00 - 8:30AM">8:00 - 8:30AM</ion-option>
+              <ion-option value="8:30 - 9:00A">8:30 - 9:00AM</ion-option>
+              <ion-option value="9:00 - 9:30AM">9:00 - 9:30AM</ion-option>
+              <ion-option value="9:30 - 10:00AM">9:30 - 10:00AM</ion-option>
+              <ion-option value="10:00 - 10:30AM">10:00 - 10:30AM</ion-option>
+              <ion-option value="10:30 - 11:00AM">10:30 - 11:00AM</ion-option>
+              <ion-option value="11:00 - 11:30AM">11:00 - 11:30AM</ion-option>
+              <ion-option value="11:30 - 12:00">11:30 - 12:00</ion-option>
+              <ion-option value="12:00 - 12:30PM">12:00 - 12:30PM</ion-option>
+              <ion-option value="12:30 - 1:00PM">12:30 - 1:00PM</ion-option>
+              <ion-option value="1:00 - 1:30PM">1:00 - 1:30PM</ion-option>
+              <ion-option value="1:30 - 2:00PM">1:30 - 2:00PM</ion-option>
+              <ion-option value="2:00 - 2:30PM">2:00 - 2:30PM</ion-option>
+              <ion-option value="2:30 - 3:00PM">2:30 - 3:00PM</ion-option>
+              <ion-option value="3:00 - 3:30PM">3:00 - 3:30PM</ion-option>
+              <ion-option value="3:30 - 4:00PM">3:30 - 4:00PM</ion-option>
+              <ion-option value="4:00 - 4:30PM">4:00 - 4:30PM</ion-option>
+              <ion-option value="4:30 - 5:00PM">4:30 - 5:00PM</ion-option>
+              <ion-option value="5:00 - 5:30PM">5:00 - 5:30PM</ion-option>
+              <ion-option value="5:30 - 6:00PM">5:30 - 6:00PM</ion-option>
+              <ion-option value="6:00 - 6:30PM">6:00 - 6:30PM</ion-option>
+              <ion-option value="6:30 - 7:00PM">6:30 - 7:00PM</ion-option>
+              <ion-option value="7:00 - 7:30PM">7:00 - 7:30PM</ion-option>
+              <ion-option value="7:30 - 8:00PM">7:30 - 8:00PM</ion-option>
+              <ion-option value="8:00 - 8:30PM">8:00 - 8:30PM</ion-option>
+              <ion-option value="8:30 - 9:00PM">8:30 - 9:00PM</ion-option>
+              <ion-option value="9:00 - 9:30PM">9:00 - 9:30PM</ion-option>
+              <ion-option value="9:30 - 10:00PM">9:30 - 10:00PM</ion-option>
+              <ion-option value="10:00 - 10:30PM">10:00 - 10:30PM</ion-option>
+              <ion-option value="10:30 - 11:00PM">10:30 - 11:00PM</ion-option>
+              <ion-option value="11:00 - 11:30PM">11:00 - 11:30PM</ion-option>
+              <ion-option value="11:30 - 12:00">11:30 - 12:00</ion-option>
+              <ion-option value="12:00 - 12:30AM">12:00 - 12:30AM</ion-option>
+              <ion-option value="12:30 - 1:00AM">12:30 - 1:00AM</ion-option>
+              <ion-option value="1:00 - 1:30AM">1:00 - 1:30AM</ion-option>
+              <ion-option value="1:30 - 2:00AM">1:30 - 2:00AM</ion-option>
+              <ion-option value="2:00 - 2:30AM">2:00 - 2:30AM</ion-option>
+              <ion-option value="2:30 - 3:00A">2:30 - 3:00AM</ion-option>
+              <ion-option value="3:00 - 3:30AM">3:00 - 3:30AM</ion-option>
+              <ion-option value="3:30 - 4:00AM">3:30 - 4:00AM</ion-option>
+              <ion-option value="4:00 - 4:30AM">4:00 - 4:30AM</ion-option>
+              <ion-option value="4:30 - 5:00AM">4:30 - 5:00AM</ion-option>
+              <ion-option value="5:00 - 5:30AM">5:00 - 5:30AM</ion-option>
+              <ion-option value="5:30 - 6:00AM">5:30 - 6:00AM</ion-option>
+            </ion-select>
           </ion-col>
         </ion-row>
         <ion-row>

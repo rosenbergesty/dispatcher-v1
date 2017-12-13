@@ -20,11 +20,13 @@ export class DriverActivityPage {
   public daysActivity: any[] = [];
   public currentDriver;
   public hasComment = false;
+  public hasParking = false;
 
   public address = "";
   public size = "10";
   public action = "do";
   public comment = "";
+  public parking = "";
 
   public loaded = false;
   public loader = true;
@@ -222,7 +224,6 @@ export class DriverActivityPage {
               counter ++;
 
               if(date.getTime() == curDay.getTime()){
-                console.log('same');
                 this.daysActivity[this.daysActivity.length - 1].stops.push(stop);
               } else {
                 var timeDiff = date.getTime() - today.getTime();
@@ -230,7 +231,6 @@ export class DriverActivityPage {
                 curDay = date;
 
                 if(diffDays == 0){
-                  console.log('today');
                   this.daysActivity.push({date: "Today", stops: [stop]});
                 } else if(diffDays == -1){
                   this.daysActivity.push({date: "Yesterday", stops: [stop]});
@@ -258,6 +258,11 @@ export class DriverActivityPage {
   toggleComment(){
     console.log('toggling');
     this.hasComment = !this.hasComment;
+  }
+
+  toggleParking(){
+    console.log('toggling');
+    this.hasParking = !this.hasParking;
   }
 
   /* Delete Stop */
@@ -321,6 +326,7 @@ export class DriverActivityPage {
         size: this.size,
         action: this.action,
         comment: this.comment,
+        parking: this.parking,
         date: date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear(),
         time: date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
       }
@@ -333,6 +339,7 @@ export class DriverActivityPage {
             if(resp.code == '200'){
               this.fetchLatestStops();
               this.address = '';
+              this.comment = '';
               this.autocomplete.query = '';
             }
             loading.dismiss();
@@ -419,8 +426,7 @@ export class DriverActivityPage {
       this.connected = true;
     }
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-      // this.connected = false;
-      this.connected = true;
+      this.connected = false;
     });
 
     let connectSubscription = this.network.onConnect().subscribe(() => {
