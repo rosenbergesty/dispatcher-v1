@@ -130,6 +130,7 @@ export class DriverActivityPage {
 
                 this.content.scrollToBottom(300);
               } else {
+                console.log(data.json());
                 this.loader = false;
                 this.empty = false;
                 this.loaded = true;
@@ -436,8 +437,6 @@ export class DriverActivityPage {
         }
       }, 3000);
     });
-    
-      this.connected = true;
   }
   connectionAlert() {
     var alert = this.alertCtrl.create({

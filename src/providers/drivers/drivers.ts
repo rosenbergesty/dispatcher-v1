@@ -45,4 +45,8 @@ export class Drivers {
   forwardStop(stopId, driverId, type, address, date, time) {
     return this.http.post(this.baseUrl + '/forward-stop.php', {stopId: stopId, driverId: driverId, stopType: type, address: address, date: date, time: time});
   }
+
+  getDriverDetails(driverId){
+    return this.http.post(this.baseUrl + '/get-driver-details.php', {driver: driverId});
+  }
 }
