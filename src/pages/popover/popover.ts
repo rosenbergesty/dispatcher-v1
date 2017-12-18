@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { ViewController, NavParams, Select } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { Drivers } from '../../providers/drivers/drivers';
@@ -25,7 +25,7 @@ export class PopoverPage {
   public driver = '';
   public isPending = false;
 
-  @ViewChild('select') select: 'select';
+  @ViewChild(Select) select: Select;
 
   constructor(public viewCtrl: ViewController, 
     public navParams: NavParams, public drivers: Drivers,
