@@ -17,7 +17,7 @@
 
       <div *ngFor="let stop of day.stops" class="stop-msg" [ngClass]="stop.status" (click)="onHold($event, stop)">
         <p>{{ stop.address }}</p>
-        <p><span *ngIf="stop.type == 'do'">{{ "Drop Off" }}</span><span *ngIf="stop.type == 'pu'">{{ "Pick Up" }}</span><span *ngIf="stop.type == 'sw'">{{ "Switch" }}</span> | {{ stop.size }} <span *ngIf="stop.timeFulfilled">|</span> {{ stop.timeFulfilled }}</p>
+        <p><span *ngIf="stop.type == 'dp'">{{ "Drop Off" }}</span><span *ngIf="stop.type == 'pu'">{{ "Pick Up" }}</span><span *ngIf="stop.type == 'sw'">{{ "Switch" }}</span> | {{ stop.size }} <span *ngIf="stop.timeFulfilled">|</span> {{ stop.timeFulfilled }}</p>
       </div>
     </div>
   </div>
@@ -121,13 +121,14 @@
               <ion-segment-button value="20">20</ion-segment-button>
               <ion-segment-button value="30">30</ion-segment-button>
               <ion-segment-button value="40">40</ion-segment-button>
+              <ion-segment-button value="mini">Mini</ion-segment-button>
             </ion-segment>
           </ion-col>
           <ion-col col-4>
             <ion-label stacked>Action</ion-label>
             <ion-segment [(ngModel)]="action">
               <ion-segment-button value="pu">PU</ion-segment-button>
-              <ion-segment-button value="do">DO</ion-segment-button>
+              <ion-segment-button value="dp">DP</ion-segment-button>
               <ion-segment-button value="sw">SW</ion-segment-button>
             </ion-segment>
           </ion-col>

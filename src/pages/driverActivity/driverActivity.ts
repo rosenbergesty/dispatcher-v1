@@ -24,7 +24,7 @@ export class DriverActivityPage {
 
   public address = "";
   public size = "10";
-  public action = "do";
+  public action = "dp";
   public comment = "";
   public parking = "";
 
