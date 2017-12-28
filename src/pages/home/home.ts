@@ -30,7 +30,6 @@ export class HomePage {
     private network: Network, public alertCtrl: AlertController, 
     private toast: Toast) {
     this.storage.get('user').then((val) => {
-      console.log(val);
       if(val == null){
         this.navCtrl.push(LoginPage);
       } else {
@@ -44,24 +43,6 @@ export class HomePage {
       if(val == null){
         this.getAllDrivers();
       } else {
-        console.log(val);
-
-        // Get Driver Details
-        // for(var driver of val){
-        //   console.log(driver.ID);
-        //   this.drivers.getDriverDetails(driver.ID).subscribe(
-        //     data => {
-        //       console.log(data.json());
-        //       this.fetchedDrivers.push(driver);
-        //       this.items.push(val);
-        //     },
-        //     err => {
-
-        //     },
-        //     () => {
-
-        //     });
-        // }
 
         // Display drivers
         this.fetchedDrivers = val;
@@ -75,27 +56,6 @@ export class HomePage {
           this.fetchedDrivers = [];
           this.storage.remove('drivers');
           this.getAllDrivers();
-
-          // this.drivers.countDrivers().subscribe(
-          //   data => {
-          //     // if(this.fetchedDrivers.length < data.json()){
-          //     //   var count = data.json() - this.fetchedDrivers.length;
-          //     //   this.getDrivers(count);
-          //     // } else if (this.fetchedDrivers.length > data.json()){
-          //     //   this.fetchedDrivers = [];
-          //     //   this.storage.remove('drivers');
-          //     //   this.getAllDrivers();
-          //     // }
-
-          //     this.fetchedDrivers = [];
-          //     this.storage.remove('drivers');
-          //     this.getAllDrivers();
-          //   }, 
-          //   err => {
-          //     console.log(err);
-          //   },
-          //   () => console.log('counted')
-          // ); 
         } else {
           this.toast.show(`Error loading new drivers. Check your connection.`, '5000', 'center').subscribe(
             toast => {
@@ -123,7 +83,6 @@ export class HomePage {
                 if(data.json() != '0 results'){
                   this.storage.get('drivers').then((val) => {
                     if(val == null){
-                      console.log(data.json());
                       this.storage.set('drivers', data.json());
                       this.fetchedDrivers = data.json();
                       this.items = data.json();
@@ -132,7 +91,6 @@ export class HomePage {
                         this.fetchedDrivers.push(i);
                         this.items.push(i);
                         val.push(i);
-                        console.log(val);
                         this.storage.set('drivers', val);
                       }
                     }
@@ -142,14 +100,14 @@ export class HomePage {
                 }
               },
               err => console.error(err),
-              () => console.log('getDrivers completed')
+              () => {}
             ); 
           }
         }, 
         err => {
           console.log(err);
         },
-        () => console.log('counted')
+        () => {}
       );
     } else {
       this.connectionAlert();
@@ -165,14 +123,12 @@ export class HomePage {
           if(data.json() != '0 results'){
             this.storage.get('drivers').then((val) => {
               if(val == null){
-                console.log(data.json())
                 this.storage.set('drivers', data.json());
               } else {
                 for(var i of data.json()) {
                   this.fetchedDrivers.push(i);
                   this.items.push(i);
                   val.push(i);
-                  console.log(val);
                   this.storage.set('drivers', val);
                 }
               }
@@ -182,7 +138,7 @@ export class HomePage {
           }
         },
         err => console.error(err),
-        () => console.log('getDrivers completed')
+        () => {}
       ); 
     } else {
       this.toast.show(`Error loading new drivers. Check your connection.`, '5000', 'center').subscribe(

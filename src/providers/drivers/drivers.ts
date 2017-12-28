@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 
 @Injectable()
 export class Drivers {
-  baseUrl = "http://estyrosenberg.com/guma/backend";
+  baseUrl = "http://gumadispatch.com/backend";
   constructor(private http: Http) {
   }
 

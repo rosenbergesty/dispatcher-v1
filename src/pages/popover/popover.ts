@@ -48,7 +48,6 @@ export class PopoverPage {
   }
 
   forward(){
-    console.log('forward');
     this.select.open();
   }
 
@@ -62,15 +61,13 @@ export class PopoverPage {
         if(resp[0].code == 200){
           this.viewCtrl.dismiss();
         } else {
-          console.log(data.json());
-          console.log(data.json().data);
+
         }
       },
       err => {
         console.log(err);
       },
       () => {
-        console.log('deleted');
       }
     );
   }
@@ -95,7 +92,7 @@ export class PopoverPage {
         }
       },
       err => console.error(err),
-      () => console.log('getDrivers completed')
+      () => {}
     ); 
   }
 
@@ -105,14 +102,12 @@ export class PopoverPage {
         var resp = data.json();
         if(resp[0].code == 200){
         } else {
-          console.log(data.json().data);
         }
       },
       err => {
         console.log(err);
       },
       () => {
-        console.log('deleted');
       })
   }
 }

@@ -88,7 +88,6 @@ export class DriverActivityPage {
           count ++;
 
           if(date.getTime() == curDay.getTime()){
-            console.log('same');
             this.daysActivity[this.daysActivity.length - 1].stops.push(stop);
           } else {
             var timeDiff = date.getTime() - today.getTime();
@@ -130,7 +129,6 @@ export class DriverActivityPage {
 
                 this.content.scrollToBottom(300);
               } else {
-                console.log(data.json());
                 this.loader = false;
                 this.empty = false;
                 this.loaded = true;
@@ -152,7 +150,6 @@ export class DriverActivityPage {
                   counter ++;
 
                   if(date.getTime() == curDay.getTime()){
-                    console.log('same');
                     this.daysActivity[this.daysActivity.length - 1].stops.push(stop);
                   } else {
                     var timeDiff = date.getTime() - today.getTime();
@@ -160,7 +157,6 @@ export class DriverActivityPage {
                     curDay = date;
 
                     if(diffDays == 0){
-                      console.log('today');
                       this.daysActivity.push({date: "Today", stops: [stop]});
                     } else if(diffDays == -1){
                       this.daysActivity.push({date: "Yesterday", stops: [stop]});
@@ -183,7 +179,7 @@ export class DriverActivityPage {
                 console.log('Not found');
               }
             },
-            () => console.log('fetchDriverStops completed')
+            () => {}
           )
         })
       } else {
@@ -251,18 +247,16 @@ export class DriverActivityPage {
             console.log('Not found');
           }
         },
-        () => console.log('fetchDriverStops completed')
+        () => {}
       )
     });
   }
 
   toggleComment(){
-    console.log('toggling');
     this.hasComment = !this.hasComment;
   }
 
   toggleParking(){
-    console.log('toggling');
     this.hasParking = !this.hasParking;
   }
 
@@ -283,7 +277,6 @@ export class DriverActivityPage {
   }
 
   chooseItem(item: any) {
-    console.log(item);
     this.autocomplete.query = item;
     this.autocompleteItems = [];
     this.address = item;
@@ -311,7 +304,6 @@ export class DriverActivityPage {
     // Show error if not valid
     var valid = true;
     if(this.address.length < 1){
-      console.log('Address');
       valid = false;
     }
 
@@ -335,7 +327,6 @@ export class DriverActivityPage {
         loading.present();
         this.drivers.addStop(this.currentDriver.ID, val.ID, stop).subscribe(
           data => {
-            console.log(data.json());
             var resp = data.json()[0];
             if(resp.code == '200'){
               this.fetchLatestStops();
@@ -350,7 +341,7 @@ export class DriverActivityPage {
             console.log(err);
           },
           () => {
-            console.log('Stop Added');
+
           }
         );
 
@@ -360,7 +351,6 @@ export class DriverActivityPage {
 
   /* Load More */
   onLoadMore(event){
-    console.log('load more');
     var total = this.activity.length;
     var count = 10;
     var today = new Date();
@@ -369,7 +359,6 @@ export class DriverActivityPage {
     this.storage.get('user').then((val) => {
       this.drivers.fetchSomeDriverStops(val.ID, this.currentDriver, count, total).subscribe(
         data => {
-          console.log(data.json());
           if(data.json() == '0 results'){
             console.log('none');
           } else {
@@ -393,7 +382,6 @@ export class DriverActivityPage {
                 curDay = date;
 
                 if(diffDays == 0){
-                  console.log('today');
                   this.daysActivity.unshift({date: "Today", stops: [i]});
                 } else if(diffDays == -1){
                   this.daysActivity.unshift({date: "Yesterday", stops: [i]});
@@ -414,7 +402,7 @@ export class DriverActivityPage {
             console.log('Not found');
           }
         },
-        () => console.log('fetchDriverStops completed')
+        () => {}
       )
     })
 
